@@ -4,6 +4,7 @@ namespace Mhmdomer\DatabaseBackup\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseBackupCommand extends Command
 {
@@ -25,13 +26,17 @@ class DatabaseBackupCommand extends Command
 
         exec($command, $output, $returnVar);
 
+        $files = Storage::allFiles('backup');
+        if (count($files) > config('database-backup.maximum_backup_files')) {
+            Storage::delete([$files[0]]);
+        }
+
         if (config('database-backup.mail.send')) {
-            Mail::send('<h2>Database Backup</h2>', [], function ($message) {
+            Mail::send('database-backup::backup_mail', [], function ($message) use ($filePath) {
                 $message->from(config('mail.from.address'));
-                $message->sender(config('mail.from.name'));
                 $message->to(config('database-backup.mail.to'));
                 $message->subject(config('app.name') . ' Database Backup');
-                $message->attach();
+                $message->attach($filePath);
             });
         }
         $this->comment('Backup complete');
