@@ -3,6 +3,7 @@
 namespace Mhmdomer\DatabaseBackup\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Mhmdomer\DatabaseBackup\DatabaseBackupServiceProvider;
 
@@ -13,7 +14,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Mhmdomer\\DatabaseBackup\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'Mhmdomer\\DatabaseBackup\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
         );
     }
 
@@ -26,11 +27,6 @@ class TestCase extends Orchestra
 
     public function getEnvironmentSetUp($app)
     {
-        config()->set('database.default', 'testing');
-
-        /*
-        $migration = include __DIR__.'/../database/migrations/create_database-backup_table.php.stub';
-        $migration->up();
-        */
+        Schema::dropAllTables();
     }
 }
