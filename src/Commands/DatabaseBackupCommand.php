@@ -27,8 +27,9 @@ class DatabaseBackupCommand extends Command
         exec($command, $output, $returnVar);
 
         $files = Storage::allFiles('backup');
-        if (count($files) > config('database-backup.maximum_backup_files')) {
-            Storage::delete([$files[0]]);
+        $maximumFiles = config('database-backup.maximum_backup_files');
+        if (count($files) > $maximumFiles) {
+            Storage::delete(array_slice($files, 0, count($files) - $maximumFiles));
         }
 
         if (config('database-backup.mail.send')) {
