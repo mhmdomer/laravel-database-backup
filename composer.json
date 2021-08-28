@@ -1,12 +1,12 @@
 {
-    "name": "mhmdomer/database-backup",
+    "name": "mhmdomer/laravel-database-backup",
     "description": "Backup your laravel database by a simple artisan command",
     "keywords": [
         "mhmdomer",
         "laravel",
-        "database-backup"
+        "laravel-database-backup"
     ],
-    "homepage": "https://github.com/mhmdomer/database-backup",
+    "homepage": "https://github.com/mhmdomer/laravel-database-backup",
     "license": "MIT",
     "authors": [
         {
