@@ -18,7 +18,7 @@ class DatabaseBackupCommand extends Command
         $this->comment('Running backup...');
         $filename = "database_backup_" . now()->format('Y_m_d_H_i_s_u') . '.sql';
 
-        if (!file_exists(storage_path('app/backup'))) {
+        if (! file_exists(storage_path('app/backup'))) {
             $this->comment('Creating backup folder inside storage/app folder...');
             mkdir(storage_path('app/backup'), 0775, true);
         }
