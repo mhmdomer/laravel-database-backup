@@ -18,7 +18,7 @@ class DatabaseBackupCommand extends Command
         $this->comment('Running backup...');
         $filename = "database_backup_" . now()->format('Y_m_d_H_i_s_u') . '.sql';
 
-        if (!file_exists(storage_path('app/backup'))) {
+        if (! file_exists(storage_path('app/backup'))) {
             $this->comment('Creating backup folder inside storage/app folder...');
             mkdir(storage_path('app/backup'), 0775, true);
         }
@@ -30,6 +30,7 @@ class DatabaseBackupCommand extends Command
             $command = $this->getCommand($connection, $filePath);
         } catch (\Exception $e) {
             $this->error($e->getMessage());
+
             return;
         }
         exec($command);
@@ -68,7 +69,7 @@ class DatabaseBackupCommand extends Command
                 . " --host=" . env('DB_HOST') . " "
                 . env('DB_DATABASE') . "  > " . $filePath
                 . " 2> /dev/null";
-        } else if ($connection == 'pgsql') {
+        } elseif ($connection == 'pgsql') {
             return "pg_dump " . env('DB_DATABASE') . " > " . $filePath;
         } else {
             throw new Exception("The connection " . $connection . " is not supported yet");
