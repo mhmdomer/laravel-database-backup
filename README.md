@@ -2,6 +2,8 @@
 
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/mhmdomer/laravel-database-backup/run-tests?label=tests)](https://github.com/mhmdomer/laravel-database-backup/actions/workflows/run-tests.yml/badge.svg)
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/mhmdomer/laravel-database-backup/Check%20&%20fix%20styling?label=code%20style)](https://github.com/mhmdomer/laravel-database-backup/actions/workflows/php-cs-fixer.yml/badge.svg)
+[![Total Downloads](https://img.shields.io/packagist/dt/mhmdomer/laravel-database-backup.svg?style=flat-square)](https://packagist.org/packages/mhmdomer/laravel-database-backup)
+[![Latest Stable Version](http://poser.pugx.org/mhmdomer/laravel-database-backup/v)](https://packagist.org/packages/mhmdomer/laravel-database-backup)
 [![License](http://poser.pugx.org/mhmdomer/laravel-database-backup/license)](https://packagist.org/packages/mhmdomer/laravel-database-backup)
 
 This package will allow you to backup your laravel app database and you can also choose to send the backup file via email by simply running the command `php artisan database:backup`
