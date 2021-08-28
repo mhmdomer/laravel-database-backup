@@ -36,12 +36,11 @@ class CommandTest extends TestCase
     {
         $mailer = Mockery::spy(Mailer::class);
         Mail::swap($mailer);
+        $mailer->shouldReceive('send')->once();
 
         $this->artisan('database:backup');
-        Mail::assertNothingSent();
 
         config()->set("database-backup.mail.send", true);
         $this->artisan('database:backup');
-        $mailer->shouldHaveReceived('send');
     }
 }
