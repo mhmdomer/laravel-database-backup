@@ -18,13 +18,13 @@ class DatabaseBackupCommand extends Command
         $this->comment('Running backup...');
         $filename = "database_backup_" . now()->format('Y_m_d_H_i_s_u') . '.sql';
 
-        if (! file_exists(storage_path('app/backup'))) {
+        if (!file_exists(storage_path('app/backup'))) {
             $this->comment('Creating backup folder inside storage/app folder...');
             mkdir(storage_path('app/backup'), 0775, true);
         }
 
         $filePath = storage_path("app/backup/") . $filename;
-        $connection = env('DB_CONNECTION');
+        $connection = config('database.default');
 
         try {
             $command = $this->getCommand($connection, $filePath);
@@ -64,13 +64,15 @@ class DatabaseBackupCommand extends Command
         if ($connection === 'mysql') {
             return
                 "mysqldump --user="
-                . env('DB_USERNAME')
-                . " --password=" . env('DB_PASSWORD')
-                . " --host=" . env('DB_HOST') . " "
-                . env('DB_DATABASE') . "  > " . $filePath
+                . config('database.connections.mysql.username')
+                . " --password=" . config('database.connections.mysql.password')
+                . " --host=" . config('database.connections.mysql.host') . " "
+                . config('database.connections.mysql.database') . "  > " . $filePath
                 . " 2> /dev/null";
         } elseif ($connection == 'pgsql') {
-            return "pg_dump " . env('DB_DATABASE') . " > " . $filePath;
+            return "pg_dump " . config('database.connections.pgsql.database') . " > " . $filePath;
+        } elseif ($connection == 'sqlite') {
+            return "cp " . config('database.connections.sqlite.database') . " " . $filePath . 'ite';
         } else {
             throw new Exception("The connection " . $connection . " is not supported yet");
         }
