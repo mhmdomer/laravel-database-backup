@@ -1,9 +1,9 @@
 # Backup your laravel database by a simple artisan command
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/mhmdomer/database-backup.svg?style=flat-square)](https://packagist.org/packages/mhmdomer/database-backup)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/mhmdomer/database-backup/run-tests?label=tests)](https://github.com/mhmdomer/database-backup/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/mhmdomer/database-backup/Check%20&%20fix%20styling?label=code%20style)](https://github.com/mhmdomer/database-backup/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/mhmdomer/database-backup.svg?style=flat-square)](https://packagist.org/packages/mhmdomer/database-backup)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/mhmdomer/database-backup.svg?style=flat-square)](https://packagist.org/packages/mhmdomer/laravel-database-backup)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/mhmdomer/database-backup/run-tests?label=tests)](https://github.com/mhmdomer/laravel-database-backup/actions/workflows/run-tests.yml/badge.svg)
+[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/mhmdomer/database-backup/Check%20&%20fix%20styling?label=code%20style)](https://github.com/mhmdomer/laravel-database-backup/actions/workflows/php-cs-fixer.yml/badge.svg)
+[![Total Downloads](https://img.shields.io/packagist/dt/mhmdomer/database-backup.svg?style=flat-square)](https://packagist.org/packages/mhmdomer/laravel-database-backup)
 
 This package will allow you to backup your laravel app database and you can also choose to send the backup file via email by simply running the command `php artisan database:backup`
 
@@ -12,7 +12,7 @@ This package will allow you to backup your laravel app database and you can also
 You can install the package via composer:
 
 ```bash
-composer require mhmdomer/database-backup
+composer require mhmdomer/laravel-database-backup
 ```
 
 You can publish the config file file with:
