@@ -2,22 +2,46 @@
 
 namespace Mhmdomer\DatabaseBackup\Tests;
 
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Contracts\Mail\Mailer;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
+use Mockery;
 
 class CommandTest extends TestCase
 {
     /** @test */
-    public function backup_command_executes_successfully()
+    public function a_backup_file_is_created()
     {
-        Artisan::call("migrate");
-        $filename = "backup-" . Carbon::now()->format('Y-m-d');
+        $this->artisan('database:backup')->expectsOutput('Backup complete');
+        $files = Storage::allFiles('backup');
+        $this->assertCount(1, $files);
+    }
 
-        $command = "mysqldump --user=" . env('DB_USERNAME') . " --password=" . env('DB_PASSWORD') . " --host=" . env('DB_HOST') . " " . env('DB_DATABASE') . "  > " . storage_path() . "app/backup/" . $filename;
+    /** @test */
+    public function maximum_number_of_files_is_never_exceeded()
+    {
+        $maximumNumberOfFiles = config('database-backup.maximum_backup_files');
+        for ($i = 0; $i < $maximumNumberOfFiles; $i++) {
+            $this->artisan('database:backup');
+        }
+        $files = Storage::allFiles('backup');
+        $this->assertCount($maximumNumberOfFiles, $files);
 
-        $returnVar = NULL;
-        $output  = NULL;
+        $this->artisan('database:backup');
+        $this->assertCount($maximumNumberOfFiles, $files);
+    }
 
-        exec($command, $output, $returnVar);
+    /** @test */
+    public function email_is_sent_upon_backup_completion_if_it_is_enabled()
+    {
+        $mailer = Mockery::spy(Mailer::class);
+        Mail::swap($mailer);
+
+        $this->artisan('database:backup');
+        Mail::assertNothingSent();
+
+        config()->set("database-backup.mail.send", true);
+        $this->artisan('database:backup');
+        $mailer->shouldHaveReceived('send');
     }
 }

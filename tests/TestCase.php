@@ -4,6 +4,7 @@ namespace Mhmdomer\DatabaseBackup\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Mhmdomer\DatabaseBackup\DatabaseBackupServiceProvider;
 
@@ -28,5 +29,6 @@ class TestCase extends Orchestra
     public function getEnvironmentSetUp($app)
     {
         Schema::dropAllTables();
+        Storage::deleteDirectory('backup');
     }
 }
