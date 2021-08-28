@@ -2,6 +2,7 @@
 
 namespace Mhmdomer\DatabaseBackup\Commands;
 
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -17,19 +18,20 @@ class DatabaseBackupCommand extends Command
         $this->comment('Running backup...');
         $filename = "database_backup_" . now()->format('Y_m_d_H_i_s_u') . '.sql';
 
-        if (! file_exists(storage_path('app/backup'))) {
+        if (!file_exists(storage_path('app/backup'))) {
             $this->comment('Creating backup folder inside storage/app folder...');
             mkdir(storage_path('app/backup'), 0775, true);
         }
 
         $filePath = storage_path("app/backup/") . $filename;
-        $command = "mysqldump --user="
-            . env('DB_USERNAME')
-            . " --password=" . env('DB_PASSWORD')
-            . " --host=" . env('DB_HOST') . " "
-            . env('DB_DATABASE') . "  > " . $filePath
-            . " 2> /dev/null";
+        $connection = env('DB_CONNECTION');
 
+        try {
+            $command = $this->getCommand($connection, $filePath);
+        } catch (\Exception $e) {
+            $this->error($e->getMessage());
+            return;
+        }
         exec($command);
 
         $files = Storage::allFiles('backup');
@@ -54,5 +56,22 @@ class DatabaseBackupCommand extends Command
             $message->subject(config('app.name') . ' Database Backup');
             $message->attach($filePath);
         });
+    }
+
+    protected function getCommand($connection, $filePath)
+    {
+        if ($connection === 'mysql') {
+            return
+                "mysqldump --user="
+                . env('DB_USERNAME')
+                . " --password=" . env('DB_PASSWORD')
+                . " --host=" . env('DB_HOST') . " "
+                . env('DB_DATABASE') . "  > " . $filePath
+                . " 2> /dev/null";
+        } else if ($connection == 'pgsql') {
+            return "pg_dump " . env('DB_DATABASE') . " > " . $filePath;
+        } else {
+            throw new Exception("The connection " . $connection . " is not supported yet");
+        }
     }
 }

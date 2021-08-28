@@ -6,7 +6,7 @@
 
 This package will allow you to backup your laravel app database and you can also choose to send the backup file via email by simply running the command `php artisan database:backup`
 
-**For now, this package only works with MYSQL databases**
+**For now, this package only works with MYSQL and Postgresql databases**
 
 ## Installation
 
