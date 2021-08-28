@@ -15,3 +15,7 @@
 ## 0.1.1 - 2021-08-28
 
 -   Added support for Laravel version >= 6
+
+## 0.2.0 - 2021-08-29
+
+-   Added support for sqlite database
