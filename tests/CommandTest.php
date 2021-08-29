@@ -5,7 +5,6 @@ namespace Mhmdomer\DatabaseBackup\Tests;
 use Exception;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 use Mhmdomer\DatabaseBackup\DatabaseBackup;
 use Mhmdomer\DatabaseBackup\Exceptions\NoBackupFileFoundException;
 use Mockery;
