@@ -19,3 +19,7 @@
 ## 0.2.0 - 2021-08-29
 
 -   Added support for sqlite database
+
+## 0.3.0 - 2021-08-30
+
+-   Added helper functions to get latest backup file and all backups

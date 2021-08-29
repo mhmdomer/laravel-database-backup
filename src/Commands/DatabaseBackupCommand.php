@@ -43,7 +43,7 @@ class DatabaseBackupCommand extends Command
             $sliced = array_slice($files, 0, count($files) - $maximumFiles);
             collect($sliced)->each(function ($file) use ($backupFolder) {
                 if ($file != '.') {
-                    unlink($backupFolder . '/' . $file);
+                    unlink($file);
                 }
             });
         }

@@ -2,10 +2,12 @@
 
 namespace Mhmdomer\DatabaseBackup\Tests;
 
+use Exception;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Mhmdomer\DatabaseBackup\DatabaseBackup;
+use Mhmdomer\DatabaseBackup\Exceptions\NoBackupFileFoundException;
 use Mockery;
 
 class CommandTest extends TestCase
@@ -43,5 +45,19 @@ class CommandTest extends TestCase
 
         config()->set("database-backup.mail.send", true);
         $this->artisan('database:backup');
+    }
+
+    /** @test */
+    public function it_can_get_the_latest_backup_if_exists()
+    {
+        $this->expectException(NoBackupFileFoundException::class);
+        DatabaseBackup::getLatestBackupFile();
+
+        $this->artisan('database:backup');
+
+        $this->assertEquals(
+            DatabaseBackup::getBackupFiles()[0],
+            DatabaseBackup::getLatestBackupFile()
+        );
     }
 }
