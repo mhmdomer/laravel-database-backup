@@ -5,6 +5,7 @@ namespace Mhmdomer\DatabaseBackup\Tests;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Mhmdomer\DatabaseBackup\DatabaseBackup;
 use Mockery;
 
 class CommandTest extends TestCase
@@ -13,7 +14,7 @@ class CommandTest extends TestCase
     public function a_backup_file_is_created()
     {
         $this->artisan('database:backup')->expectsOutput('Backup complete');
-        $files = Storage::allFiles('backup');
+        $files = DatabaseBackup::getBackupFiles();
         $this->assertCount(1, $files);
     }
 
@@ -24,7 +25,7 @@ class CommandTest extends TestCase
         for ($i = 0; $i < $maximumNumberOfFiles; $i++) {
             $this->artisan('database:backup');
         }
-        $files = Storage::allFiles('backup');
+        $files = DatabaseBackup::getBackupFiles();
         $this->assertCount($maximumNumberOfFiles, $files);
 
         $this->artisan('database:backup');

@@ -13,10 +13,7 @@ class TestCase extends Orchestra
     public function setUp(): void
     {
         parent::setUp();
-
-        Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Mhmdomer\\DatabaseBackup\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
-        );
+        $this->clearBackups();
     }
 
     protected function getPackageProviders($app)
@@ -29,6 +26,14 @@ class TestCase extends Orchestra
     public function getEnvironmentSetUp($app)
     {
         Schema::dropAllTables();
-        Storage::deleteDirectory('backup');
+    }
+
+    protected function clearBackups()
+    {
+        $backupFolder = config('database-backup.backup_folder');
+        if (is_dir($backupFolder)) {
+            array_map('unlink', glob("$backupFolder/*.*"));
+            rmdir($backupFolder);
+        }
     }
 }

@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Mhmdomer\DatabaseBackup\DatabaseBackup;
 
 class DatabaseBackupCommand extends Command
 {
@@ -18,14 +19,14 @@ class DatabaseBackupCommand extends Command
         $this->comment('Running backup...');
         $filename = "database_backup_" . now()->format('Y_m_d_H_i_s_u') . '.sql';
 
-        if (! file_exists(storage_path('app/backup'))) {
+        $backupFolder = config('database-backup.backup_folder');
+        if (!file_exists($backupFolder)) {
             $this->comment('Creating backup folder inside storage/app folder...');
-            mkdir(storage_path('app/backup'), 0775, true);
+            mkdir($backupFolder, 0775, true);
         }
+        $filePath = $backupFolder . '/' . $filename;
 
-        $filePath = storage_path("app/backup/") . $filename;
         $connection = config('database.default');
-
         try {
             $command = $this->getCommand($connection, $filePath);
         } catch (\Exception $e) {
@@ -35,11 +36,16 @@ class DatabaseBackupCommand extends Command
         }
         exec($command);
 
-        $files = Storage::allFiles('backup');
+        $files = DatabaseBackup::getBackupFiles();
         $maximumFiles = config('database-backup.maximum_backup_files');
 
         if (count($files) > $maximumFiles) {
-            Storage::delete(array_slice($files, 0, count($files) - $maximumFiles));
+            $sliced = array_slice($files, 0, count($files) - $maximumFiles);
+            collect($sliced)->each(function ($file) use ($backupFolder) {
+                if ($file != '.') {
+                    unlink($backupFolder . '/' . $file);
+                }
+            });
         }
 
         if (config('database-backup.mail.send')) {
@@ -49,7 +55,13 @@ class DatabaseBackupCommand extends Command
         $this->comment('Backup complete');
     }
 
-    protected function sendMail($filePath)
+    /**
+     * sends backup email
+     *
+     * @param string $filePath
+     * @return void
+     */
+    protected function sendMail(string $filePath)
     {
         Mail::send('database-backup::backup_mail', [], function ($message) use ($filePath) {
             $message->from(config('mail.from.address'));
@@ -59,6 +71,12 @@ class DatabaseBackupCommand extends Command
         });
     }
 
+    /**
+     * returns a string command based on the connection passed
+     *
+     * @param string $connection
+     * @param string $filePath
+     */
     protected function getCommand($connection, $filePath)
     {
         if ($connection === 'mysql') {
