@@ -2,7 +2,6 @@
 
 namespace Mhmdomer\DatabaseBackup\Tests;
 
-use Exception;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Support\Facades\Mail;
 use Mhmdomer\DatabaseBackup\DatabaseBackup;

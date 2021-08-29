@@ -51,7 +51,7 @@
                 "Mhmdomer\\DatabaseBackup\\DatabaseBackupServiceProvider"
             ],
             "aliases": {
-                "DatabaseBackup": "Mhmdomer\\DatabaseBackup\\DatabaseBackupFacade"
+                "DatabaseBackup": "Mhmdomer\\DatabaseBackup\\Facades\\DatabaseBackup"
             }
         }
     },
