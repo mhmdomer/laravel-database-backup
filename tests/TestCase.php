@@ -2,9 +2,7 @@
 
 namespace Mhmdomer\DatabaseBackup\Tests;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Storage;
 use Mhmdomer\DatabaseBackup\DatabaseBackupServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 

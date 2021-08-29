@@ -4,7 +4,6 @@ namespace Mhmdomer\DatabaseBackup\Tests;
 
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 use Mhmdomer\DatabaseBackup\DatabaseBackup;
 use Mockery;
 

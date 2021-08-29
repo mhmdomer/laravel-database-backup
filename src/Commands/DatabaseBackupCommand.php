@@ -5,7 +5,6 @@ namespace Mhmdomer\DatabaseBackup\Commands;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 use Mhmdomer\DatabaseBackup\DatabaseBackup;
 
 class DatabaseBackupCommand extends Command
@@ -20,13 +19,14 @@ class DatabaseBackupCommand extends Command
         $filename = "database_backup_" . now()->format('Y_m_d_H_i_s_u') . '.sql';
 
         $backupFolder = config('database-backup.backup_folder');
-        if (!file_exists($backupFolder)) {
+        if (! file_exists($backupFolder)) {
             $this->comment('Creating backup folder inside storage/app folder...');
             mkdir($backupFolder, 0775, true);
         }
         $filePath = $backupFolder . '/' . $filename;
 
         $connection = config('database.default');
+
         try {
             $command = $this->getCommand($connection, $filePath);
         } catch (\Exception $e) {
