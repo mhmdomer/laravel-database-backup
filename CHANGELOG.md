@@ -24,3 +24,7 @@
 
 -   Made the backup folder path customizable
 -   Added a facade to allow getting latest backup file and all backups
+
+## 0.3.1 - 2021-08-30
+
+-   Updated the default path of the backup folder

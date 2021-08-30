@@ -12,7 +12,7 @@ class DatabaseBackup
     public static function getBackupFiles(): array
     {
         $backupFolder = config('database-backup.backup_folder');
-        if (!file_exists($backupFolder)) {
+        if (! file_exists($backupFolder)) {
             mkdir($backupFolder, 0775, true);
 
             return [];
@@ -20,7 +20,7 @@ class DatabaseBackup
         $files = array_filter(
             scandir($backupFolder),
             function ($item) {
-                return !is_dir($item);
+                return ! is_dir($item);
             }
         );
 
@@ -39,7 +39,7 @@ class DatabaseBackup
     public static function getLatestBackupFile(): ?string
     {
         $backupFolder = config('database-backup.backup_folder');
-        if (!file_exists($backupFolder)) {
+        if (! file_exists($backupFolder)) {
             mkdir($backupFolder, 0775, true);
 
             return null;
