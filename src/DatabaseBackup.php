@@ -12,18 +12,18 @@ class DatabaseBackup
      * @return array
      * @throws NoBackupFileFoundException if no backups found
      */
-
     public static function getBackupFiles()
     {
         $backupFolder = config('database-backup.backup_folder');
-        if (!file_exists($backupFolder)) {
+        if (! file_exists($backupFolder)) {
             mkdir($backupFolder, 0775, true);
+
             throw new NoBackupFileFoundException('No backups present, Please create backups first');
         }
         $files = array_filter(
             scandir($backupFolder),
             function ($item) {
-                return !is_dir($item);
+                return ! is_dir($item);
             }
         );
 
@@ -41,8 +41,9 @@ class DatabaseBackup
     public static function getLatestBackupFile()
     {
         $backupFolder = config('database-backup.backup_folder');
-        if (!file_exists($backupFolder)) {
+        if (! file_exists($backupFolder)) {
             mkdir($backupFolder, 0775, true);
+
             throw new NoBackupFileFoundException('No backups present, Please create backups first');
         }
         $files = array_values(self::getBackupFiles());
