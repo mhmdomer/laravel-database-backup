@@ -19,7 +19,7 @@ class DatabaseBackupCommand extends Command
         $filename = "database_backup_" . now()->format('Y_m_d_H_i_s_u') . '.sql';
 
         $backupFolder = config('database-backup.backup_folder');
-        if (! file_exists($backupFolder)) {
+        if (!file_exists($backupFolder)) {
             $this->comment('Creating backup folder inside storage/app folder...');
             mkdir($backupFolder, 0775, true);
         }
@@ -41,7 +41,7 @@ class DatabaseBackupCommand extends Command
 
         if (count($files) > $maximumFiles) {
             $sliced = array_slice($files, 0, count($files) - $maximumFiles);
-            collect($sliced)->each(function ($file) use ($backupFolder) {
+            collect($sliced)->each(function ($file) {
                 if ($file != '.') {
                     unlink($file);
                 }
