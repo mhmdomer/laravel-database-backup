@@ -108,6 +108,13 @@ To get all backup files:
 DatabaseBackup::getBackupFiles();
 ```
 
+To download the latest backup file:
+
+```php
+$backupFile = DatabaseBackup::getLatestBackupFile();
+return response()->download($file);
+```
+
 ## Testing
 
 ```bash
