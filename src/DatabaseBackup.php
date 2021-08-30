@@ -2,30 +2,28 @@
 
 namespace Mhmdomer\DatabaseBackup;
 
-use Mhmdomer\DatabaseBackup\Exceptions\NoBackupFileFoundException;
-
 class DatabaseBackup
 {
     /**
      * Get all backup files
      *
      * @return array
-     * @throws NoBackupFileFoundException if no backups found
      */
-    public static function getBackupFiles()
+    public static function getBackupFiles(): array
     {
         $backupFolder = config('database-backup.backup_folder');
-        if (! file_exists($backupFolder)) {
+        if (!file_exists($backupFolder)) {
             mkdir($backupFolder, 0775, true);
-
-            throw new NoBackupFileFoundException('No backups present, Please create backups first');
+            return [];
         }
         $files = array_filter(
             scandir($backupFolder),
             function ($item) {
-                return ! is_dir($item);
+                return !is_dir($item);
             }
         );
+
+        $files = array_values($files);
 
         return array_map(function ($file) use ($backupFolder) {
             return $backupFolder . '/' . $file;
@@ -35,23 +33,21 @@ class DatabaseBackup
     /**
      * Get the last backup file
      *
-     * @return string
-     * @throws NoBackupFileFoundException if no backups found
+     * @return string|null
      */
-    public static function getLatestBackupFile()
+    public static function getLatestBackupFile(): ?string
     {
         $backupFolder = config('database-backup.backup_folder');
-        if (! file_exists($backupFolder)) {
+        if (!file_exists($backupFolder)) {
             mkdir($backupFolder, 0775, true);
-
-            throw new NoBackupFileFoundException('No backups present, Please create backups first');
+            return null;
         }
         $files = array_values(self::getBackupFiles());
 
         if (count($files) == 0) {
-            throw new NoBackupFileFoundException('No backups present, Please create backups first');
+            return null;
         }
 
-        return $files[0];
+        return $files[count($files) - 1];
     }
 }

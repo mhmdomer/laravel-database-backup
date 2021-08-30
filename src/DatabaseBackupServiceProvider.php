@@ -9,7 +9,11 @@ class DatabaseBackupServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        if (! $this->app->runningInConsole()) {
+        $this->app->bind(DatabaseBackup::class, function () {
+            return new DatabaseBackup();
+        });
+
+        if (!$this->app->runningInConsole()) {
             return $this;
         }
 

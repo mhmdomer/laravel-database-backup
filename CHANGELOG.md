@@ -22,4 +22,4 @@
 
 ## 0.3.0 - 2021-08-30
 
--   Added helper functions to get latest backup file and all backups
+-   Added a facade allow getting latest backup file and all backups

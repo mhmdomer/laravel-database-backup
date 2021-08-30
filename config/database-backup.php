@@ -20,7 +20,7 @@ return [
     | each new backup after this limit will result in removing the oldest backup file
     */
 
-    'maximum_backup_files' => 10,
+    'maximum_backup_files' => 3,
 
     /*
     |-------------------------------------------------------------------------

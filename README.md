@@ -96,6 +96,18 @@ To create a backup of your database you can run:
 php artisan database:backup
 ```
 
+To get the latest backup file:
+
+```php
+DatabaseBackup::getLatestBackupFile();
+```
+
+To get all backup files:
+
+```php
+DatabaseBackup::getBackupFiles();
+```
+
 ## Testing
 
 ```bash
