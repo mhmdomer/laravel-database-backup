@@ -13,7 +13,7 @@ class DatabaseBackupServiceProvider extends ServiceProvider
             return new DatabaseBackup();
         });
 
-        if (!$this->app->runningInConsole()) {
+        if (! $this->app->runningInConsole()) {
             return $this;
         }
 
