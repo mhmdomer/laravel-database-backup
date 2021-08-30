@@ -22,4 +22,5 @@
 
 ## 0.3.0 - 2021-08-30
 
--   Added a facade allow getting latest backup file and all backups
+-   Made the backup folder path customizable
+-   Added a facade to allow getting latest backup file and all backups
