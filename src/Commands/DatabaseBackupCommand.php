@@ -9,7 +9,7 @@ use Mhmdomer\DatabaseBackup\DatabaseBackup;
 
 class DatabaseBackupCommand extends Command
 {
-    public $signature = 'database:backup';
+    public $signature = 'database:backup {--no-mail : Do not send an email}';
 
     public $description = 'Backup your entire database';
 
@@ -48,7 +48,7 @@ class DatabaseBackupCommand extends Command
             });
         }
 
-        if (config('database-backup.mail.send')) {
+        if (!$this->option('no-mail') && config('database-backup.mail.send')) {
             $this->sendMail($filePath);
         }
 

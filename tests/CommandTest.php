@@ -45,6 +45,17 @@ class CommandTest extends TestCase
     }
 
     /** @test */
+    public function email_is_not_sent_if_no_email_option_is_provided()
+    {
+        config()->set("database-backup.mail.send", true);
+        $mailer = Mockery::spy(Mailer::class);
+        Mail::swap($mailer);
+
+        $mailer->shouldReceive('send')->never();
+        $this->artisan('database:backup --no-mail');
+    }
+
+    /** @test */
     public function it_can_get_the_latest_backup_if_exists()
     {
         $this->assertEquals(null, DatabaseBackup::getLatestBackupFile());

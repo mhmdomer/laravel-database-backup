@@ -96,6 +96,12 @@ To create a backup of your database you can run:
 php artisan database:backup
 ```
 
+To disable sending a backup email you can add `--no-mail` option:
+
+```bash
+php artisan database:backup --no-mail
+```
+
 To get the latest backup file:
 
 ```php
