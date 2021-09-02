@@ -6,6 +6,9 @@ use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 use Mhmdomer\DatabaseBackup\DatabaseBackup;
+use Mhmdomer\DatabaseBackup\Databases\Mysql;
+use Mhmdomer\DatabaseBackup\Databases\Postgresql;
+use Mhmdomer\DatabaseBackup\Databases\Sqlite;
 
 class DatabaseBackupCommand extends Command
 {
@@ -20,7 +23,6 @@ class DatabaseBackupCommand extends Command
 
         $backupFolder = config('database-backup.backup_folder');
         if (!file_exists($backupFolder)) {
-            $this->comment('Creating backup folder inside storage/app folder...');
             mkdir($backupFolder, 0775, true);
         }
         $filePath = $backupFolder . '/' . $filename;
@@ -31,7 +33,6 @@ class DatabaseBackupCommand extends Command
             $command = $this->getCommand($connection, $filePath);
         } catch (\Exception $e) {
             $this->error($e->getMessage());
-
             return;
         }
         exec($command);
@@ -76,21 +77,16 @@ class DatabaseBackupCommand extends Command
      *
      * @param string $connection
      * @param string $filePath
+     * @return string
      */
-    protected function getCommand($connection, $filePath)
+    protected function getCommand(string $connection, string $filePath) : string
     {
         if ($connection === 'mysql') {
-            return
-                "mysqldump --user="
-                . config('database.connections.mysql.username')
-                . " --password=" . config('database.connections.mysql.password')
-                . " --host=" . config('database.connections.mysql.host') . " "
-                . config('database.connections.mysql.database') . "  > " . $filePath
-                . " 2> /dev/null";
+            return Mysql::getDumpCommand($filePath);
         } elseif ($connection == 'pgsql') {
-            return "pg_dump " . config('database.connections.pgsql.database') . " > " . $filePath;
+            return Postgresql::getDumpCommand($filePath);
         } elseif ($connection == 'sqlite') {
-            return "cp " . config('database.connections.sqlite.database') . " " . $filePath . 'ite';
+            return Sqlite::getDumpCommand($filePath);
         } else {
             throw new Exception("The connection " . $connection . " is not supported yet");
         }
