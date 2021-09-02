@@ -33,6 +33,7 @@ class DatabaseBackupCommand extends Command
             $command = $this->getCommand($connection, $filePath);
         } catch (\Exception $e) {
             $this->error($e->getMessage());
+
             return;
         }
         exec($command);
@@ -79,7 +80,7 @@ class DatabaseBackupCommand extends Command
      * @param string $filePath
      * @return string
      */
-    protected function getCommand(string $connection, string $filePath) : string
+    protected function getCommand(string $connection, string $filePath): string
     {
         if ($connection === 'mysql') {
             return Mysql::getDumpCommand($filePath);
