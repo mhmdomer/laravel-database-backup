@@ -41,7 +41,9 @@ class CommandTest extends TestCase
         $this->artisan('database:backup');
 
         config()->set("database-backup.mail.send", true);
-        $this->artisan('database:backup');
+        $this->artisan('database:backup')
+            ->expectsOutput('Sending Email...')
+            ->expectsOutput('Email sent successfully.');
     }
 
     /** @test */
@@ -52,7 +54,9 @@ class CommandTest extends TestCase
         Mail::swap($mailer);
 
         $mailer->shouldReceive('send')->never();
-        $this->artisan('database:backup --no-mail');
+        $this->artisan('database:backup --no-mail')
+            ->doesntExpectOutput('Sending Email...')
+            ->doesntExpectOutput('Email sent successfully.');
     }
 
     /** @test */

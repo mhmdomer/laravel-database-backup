@@ -9,7 +9,7 @@ return [
     | The path of the folder to save backups on and retrieve backups from.
     */
 
-    'backup_folder' => storage_path('app/databases'),
+    'backup_folder' => storage_path('app/backup'),
 
     /*
     |-------------------------------------------------------------------------

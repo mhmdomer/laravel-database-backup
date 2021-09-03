@@ -22,7 +22,7 @@ You can install the package via composer:
 composer require mhmdomer/laravel-database-backup
 ```
 
-You can publish the config file file with:
+You can publish the config file with:
 
 ```bash
 php artisan vendor:publish --tag=database-backup

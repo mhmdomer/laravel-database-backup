@@ -49,12 +49,11 @@ class DatabaseBackupCommand extends Command
                 }
             });
         }
+        $this->comment('Backup complete');
 
         if (!$this->option('no-mail') && config('database-backup.mail.send')) {
             $this->sendMail($filePath);
         }
-
-        $this->comment('Backup complete');
     }
 
     /**
@@ -65,12 +64,14 @@ class DatabaseBackupCommand extends Command
      */
     protected function sendMail(string $filePath)
     {
+        $this->comment('Sending Email...');
         Mail::send('database-backup::backup_mail', [], function ($message) use ($filePath) {
             $message->from(config('mail.from.address'));
             $message->to(config('database-backup.mail.to'));
             $message->subject(config('app.name') . ' Database Backup');
             $message->attach($filePath);
         });
+        $this->comment("Email sent successfully.");
     }
 
     /**
