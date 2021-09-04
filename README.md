@@ -126,7 +126,7 @@ To download the latest backup file:
 
 ```php
 $backupFile = DatabaseBackup::getLatestBackupFile();
-return response()->download($file);
+return response()->download($backupFile);
 ```
 
 ## Testing
