@@ -96,6 +96,14 @@ To create a backup of your database you can run:
 php artisan database:backup
 ```
 
+The above command is typically run as a schedule command,
+for example, you can add the following line in the `schedule` function
+inside `app\Console\Kernel.php`
+
+```php
+$schedule->command('database:backup')->daily();
+```
+
 To disable sending a backup email you can add `--no-mail` option:
 
 ```bash
