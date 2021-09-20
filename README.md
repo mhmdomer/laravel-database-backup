@@ -129,6 +129,25 @@ $backupFile = DatabaseBackup::getLatestBackupFile();
 return response()->download($backupFile);
 ```
 
+### Listening to Events
+
+`Mhmdomer\DatabaseBackup\Events\DatabaseBackupComplete` Event will be fired after each backup success, this event has a `string` public property called `$path` containing the path of the backup file so you can use it to download the file
+
+Similarly,`Mhmdomer\DatabaseBackup\Events\DatabaseBackupFailed` Event will be fired after each backup failure, this event has an `Exception` public property called `$exception` containing the exception that caused the database backup failure. For example, you can add listeners to listen for these events by editing your `EventServiceProvider` like this:
+
+```php
+protected $listen = [
+    Mhmdomer\DatabaseBackup\Events\DatabaseBackupComplete::class => [
+        SendSuccessMessage::class,
+    ],
+    Mhmdomer\DatabaseBackup\Events\DatabaseBackupFailed::class => [
+        LogException::class,
+    ],
+];
+```
+
+change `SendSuccessMessage::class` and `LogException::class` to match your own listeners
+
 ## Testing
 
 ```bash
