@@ -9,6 +9,8 @@ use Mhmdomer\DatabaseBackup\DatabaseBackup;
 use Mhmdomer\DatabaseBackup\Databases\Mysql;
 use Mhmdomer\DatabaseBackup\Databases\Postgresql;
 use Mhmdomer\DatabaseBackup\Databases\Sqlite;
+use Mhmdomer\DatabaseBackup\Events\DatabaseBackupComplete;
+use Mhmdomer\DatabaseBackup\Events\DatabaseBackupFailed;
 
 class DatabaseBackupCommand extends Command
 {
@@ -31,12 +33,12 @@ class DatabaseBackupCommand extends Command
 
         try {
             $command = $this->getCommand($connection, $filePath);
+            exec($command);
         } catch (\Exception $e) {
             $this->error($e->getMessage());
-
+            event(new DatabaseBackupFailed($e));
             return;
         }
-        exec($command);
 
         $files = DatabaseBackup::getBackupFiles();
         $maximumFiles = config('database-backup.maximum_backup_files');
@@ -49,6 +51,9 @@ class DatabaseBackupCommand extends Command
                 }
             });
         }
+        event(new DatabaseBackupComplete(
+            DatabaseBackup::getLatestBackupFile()
+        ));
         $this->comment('Backup complete');
 
         if (!$this->option('no-mail') && config('database-backup.mail.send')) {
