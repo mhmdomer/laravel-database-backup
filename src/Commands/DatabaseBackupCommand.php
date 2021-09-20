@@ -37,6 +37,7 @@ class DatabaseBackupCommand extends Command
         } catch (\Exception $e) {
             $this->error($e->getMessage());
             event(new DatabaseBackupFailed($e));
+
             return;
         }
 
