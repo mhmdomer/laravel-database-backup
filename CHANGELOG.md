@@ -28,3 +28,7 @@
 ## 0.3.1 - 2021-08-30
 
 -   Updated the default path of the backup folder
+
+## 0.3.4 - 2021-09-20
+
+-   Added `DatabaseBackupComplete` and `DatabaseBackupFailed` events
