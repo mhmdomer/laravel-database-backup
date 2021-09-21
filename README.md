@@ -1,3 +1,6 @@
+
+![Laravel Database Backup](https://user-images.githubusercontent.com/39973541/134142232-982b60e1-a765-4a37-b2f0-43e32d407a21.png)
+
 # Backup your laravel database by a simple artisan command
 
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/mhmdomer/laravel-database-backup/run-tests?label=tests)](https://github.com/mhmdomer/laravel-database-backup/actions/workflows/run-tests.yml/badge.svg)
