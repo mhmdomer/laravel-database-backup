@@ -17,6 +17,11 @@ This package will allow you to backup your laravel app database and you can also
 -   [x] Postgresql
 -   [x] sqlite
 
+## Requirements
+
+- If you are using Mysql, make sure `mysqldump` is installed on your system
+- If you are using Postgresql, make sure `pg_dump` is installed on your system
+
 ## Installation
 
 You can install the package via composer:
