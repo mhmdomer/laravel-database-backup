@@ -3,8 +3,11 @@
 namespace Mhmdomer\DatabaseBackup\Tests;
 
 use Illuminate\Contracts\Mail\Mailer;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 use Mhmdomer\DatabaseBackup\DatabaseBackup;
+use Mhmdomer\DatabaseBackup\Events\DatabaseBackupComplete;
+use Mhmdomer\DatabaseBackup\Events\DatabaseBackupFailed;
 use Mockery;
 
 class CommandTest extends TestCase
@@ -71,5 +74,25 @@ class CommandTest extends TestCase
             DatabaseBackup::getBackupFiles()[0],
             DatabaseBackup::getLatestBackupFile()
         );
+    }
+
+    /** @test */
+    public function it_fires_a_success_event_after_backup_completion()
+    {
+        Event::fake();
+        $this->artisan('database:backup');
+
+        Event::assertDispatched(DatabaseBackupComplete::class);
+    }
+
+    /** @test */
+    public function it_fires_a_failure_event_after_backup_failure()
+    {
+        Event::fake();
+        config()->set('database.default', 'mssql');
+
+        $this->artisan('database:backup');
+
+        Event::assertDispatched(DatabaseBackupFailed::class);
     }
 }
