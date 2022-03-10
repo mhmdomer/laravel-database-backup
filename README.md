@@ -11,6 +11,12 @@
 
 This package will allow you to backup your laravel app database and you can also choose to send the backup file via email by simply running the command `php artisan database:backup`
 
+| Version | Laravel Version |
+|---------|-----------------|
+| 0.3.4   | 7, 8            |
+| ^1.0    | 9               |
+|         |                 |
+
 ## Supported Databases
 
 -   [x] Mysql
