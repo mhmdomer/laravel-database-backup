@@ -58,6 +58,9 @@ class DatabaseBackupCommand extends Command
         $this->comment('Backup complete');
 
         if (!$this->option('no-mail') && config('database-backup.mail.send')) {
+            if ($connection === 'sqlite') {
+                $filePath .= 'ite';
+            }
             $this->sendMail($filePath);
         }
     }
